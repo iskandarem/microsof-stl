@@ -1092,6 +1092,32 @@ void test_insert_or_assign() {
     assert(check_value_content(direct_fm, {direct_init_only(direct_init_only::src_type{42u})}));
 }
 
+void test_square_brackets_operator() {
+    flat_map<char, int> fm;
+    fm['a']; // inserts {'a', 0}
+    assert(fm['a'] == 0);
+    fm['a'] = 1;
+    assert(fm['a'] == 1);
+}
+
+void test_at() {
+    flat_map<std::string, std::string> voc{{"h", "Mensch"}, {"p", "Person"}};
+    assert(voc.at("h") == "Mensch");
+    bool thrown = false;
+    try {
+        voc.at("x");
+    } catch (const std::out_of_range& e) {
+        thrown = true;
+    }
+    assert(thrown);
+}
+
+void test_emplace() {}
+
+void test_try_emplace() {}
+
+void test_replace() {}
+
 void test_comparison() {
     {
         flat_map<int, char> fm1{{1, '1'}, {2, '7'}, {3, '2'}, {4, '9'}};
@@ -1435,6 +1461,8 @@ void run_normal_tests() {
     test_insert_range();
     test_gh_4344();
     test_insert_or_assign();
+    test_square_brackets_operator();
+    test_at();
     test_comparison();
 
     test_map_operations_transparent<flat_map>();
